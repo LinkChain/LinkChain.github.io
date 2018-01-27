@@ -1,10 +1,10 @@
 # Site settings
 title: LinkChain
 SEOTitle: LinkChain Blog
-header-img: img/home-bg-hill.jpg
+header-img: img/blockchain_bg.jpg
 email: 744390873@qq.com
 description: "描述"
-keyword: "LinkChain, LinkChain, cdn, docker, go, golang, python, C/C++, 流媒体, 分发网络, 音视频, 编解码"
+keyword: "Blockchain, 区块链, 分布式账本, 大数据, 机器学习"
 url: "https://linkchainn.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -12,11 +12,11 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-#weibo_username:     LinkChain
+weibo_username:     wangrong_cool
 zhihu_username:     LinkChain
 github_username:    LinkChain
 #twitter_username:   LinkChain
-jianshu_username:   e413b88a622b
+jianshu_username:   8d26730386f3
 #facebook_username:  LinkChain
 # linkedin_username:  firstname-lastname-idxxxx
 

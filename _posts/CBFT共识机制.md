@@ -1,0 +1,24 @@
+##简介
+CBFT(Concurrent Byzantine Fault Tolerance) 并行拜占庭容错算法，从是拜占庭容错算法上发展而来新的共识算法。
+CBFT算法有四个阶段：block determination、pre-prepare、prepare 和 commit，后三个阶段与PBFT算法的三个阶段类似。CBFT的一个重要优势是并发性，每个块可以与其他块并发的方式投票及建块，从而大大的提高共识速度。CBFT另一个重要特点就是可以在提交阶段检测受损节点，可以在最后阶段广播消息来识别叛徒节点。步骤包含：交易级别的确认和投票、建块、块验证、块确认。
+
+![CBFT共识算法.jpg](http://upload-images.jianshu.io/upload_images/3959874-e74212fd979120bd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+##交易级别的确认和投票
+所有节点对收到的交易进行hash映射，得到一个交易Hash集合，将交易Hash集合发出给其余所有节点，每个节点对收到的交易Hash集合进行2/3与运算，求得2/3以上节点的交易交集对应的交易Hash集合；对于副本Ni，假设Si是其捕获中的一组交易。 Ni广播Hi = {hash（t）| t∈S}，并向其他副本sign（Hi，Ni）。这个阶段也选择一个主要的副本Np；
+
+##建块
+建块节点根据这个交易Hash集合得到交易集合进行建块，将块提交给其余节点；对于每个接收到的消息（Hi，sign（Hi，Ni）），主副本Np首先使用sign（Hi，Ni）和Ni的公钥来检查Hi的一致性。然后，Np计算∩in = 1Hi。交集中的交易被添加到块B中。然后，Np向其他副本广播B和sign（B，Np）。
+
+##对块进行验证
+收到块的节点通过自身的交易Hash集合和块中的交易集合对比完成验证，验证结束后将验证结果的数字签名发给其余所有节点；在这个阶段，每个副本首先使用sign（B，Np）和Np的公钥来检查B的一致性，每个副本投票B。使vote（B，Ni）表示副本Ni对B的投票（vote（B，Ni）是表示同意或拒绝）。之后，Ni将vbi =（vote（B，Ni），sign（vote（B，Ni），Ni））广播给其他副本。
+
+##块投票
+第二轮投票将所有节点收到的所有对该块的投票签名后转发，从而使得每个节点收到所有节点的投票，对投票进行统计得到最终的结果，从而决定是否接纳该块；每个副本已收到所有其他副本的投票。然而，恶意副本可以向不同的副本发送不同的投票。因此，在这个阶段，每个副本Nj首先使用sign（vote（B，Ni））和Ni的公钥来检查vote（B，Ni）的一致性。然后，Nj向所有其他副本广播svj = {vb0，vb1，...，vbn}和sign（svj，Nj）。
+
+##块确认
+对于每个副本Ni，它接收sv0，sv1，...，svn。对于0≤j≤n，它首先使用sign（svj，Nj）和Nj的公钥来检查svj的一致性。然后，计算B的同意的数量。如果同意的数量超过2n / 3，Ni回复agree给调用者。请注意，如果svj中的vbk与svl不同，对于j ≠ l，Nk是恶意副本。
+
+
+
